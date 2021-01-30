@@ -1,4 +1,3 @@
-import { rejects } from 'assert'
 import bcrypt from 'bcrypt'
 import { BcryptAdapter } from './bcrypt-adapter'
 
@@ -28,7 +27,7 @@ describe('Bcrypt Adapter', () => {
     expect(hash).toBe('mockHash')
   })
 
-  test('should throw if throws', async () => {
+  test('Should BcryptAdapter throw if bcrypt throws', async () => {
     const sut = makeSut()
     jest.spyOn(bcrypt, 'hash').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     // quando eu quero retornar uma exceção, eu não posso chamar o método do sut com um await
