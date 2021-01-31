@@ -13,6 +13,10 @@ export const MongoHelper = {
   },
   getCollection (name: string): Collection {
     return this.client.db().collection(name)
+  },
+  map: (collection: any): any => { // regra de negócio: o mongo retorna o id como _id, como preciso utilizar como id
+    const { _id, ...collectionWithoutId } = collection
+    return Object.assign({}, collectionWithoutId, { id: _id })
   }
 
 }
