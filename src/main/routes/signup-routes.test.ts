@@ -17,7 +17,7 @@ describe('SignUp Routes', () => {
   })
   test('Should return an account on success', async () => {
     await request(app)
-      .post('http://localhost:5050/api/signup')
+      .post('/api/signup')
       .send({
         name: 'Davi',
         email: 'davifeitosa.dev@protonmail.com',
