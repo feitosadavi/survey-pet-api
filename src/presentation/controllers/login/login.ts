@@ -1,6 +1,5 @@
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { AuthenticationError } from '../../errors/authentication-error'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 import { Authentication } from '../../protocols/authetication'
 import { EmailValidator } from '../signup/signup-protocols'
@@ -29,10 +28,14 @@ export class LoginController implements Controller {
       if (!isValid) {
         return badRequest(new InvalidParamError('email'))
       }
-      const isAuth = await this.authentication.auth(email, password)
-      if (!isAuth) {
-        return badRequest(new AuthenticationError('email ou senha'))
+      const accessToken = await this.authentication.auth(email, password)
+      if (!accessToken) {
+        return unauthorized()
       }
+
+      /* if (!isAuth) {
+        return badRequest(new AuthenticationError('email ou senha'))
+      } */
     } catch (e) {
       return serverError(e)
     }
