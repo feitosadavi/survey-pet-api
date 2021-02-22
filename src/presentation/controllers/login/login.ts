@@ -1,5 +1,5 @@
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
+import { badRequest, serverError, serverSuccess, unauthorized } from '../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse, Authentication, EmailValidator } from './login-protocols'
 
 export class LoginController implements Controller {
@@ -31,9 +31,7 @@ export class LoginController implements Controller {
         return unauthorized()
       }
 
-      /* if (!isAuth) {
-        return badRequest(new AuthenticationError('email ou senha'))
-      } */
+      return serverSuccess({ accessToken })
     } catch (e) {
       return serverError(e)
     }
