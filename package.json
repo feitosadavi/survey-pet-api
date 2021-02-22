@@ -12,6 +12,17 @@
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage"
   },
+  "husky": {
+    "pre-commit": "lint-staged",
+    "pre-push": "npm run test:ci"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint 'src/**' --fix",
+      "npm run test:staged",
+      "git add"
+    ]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
