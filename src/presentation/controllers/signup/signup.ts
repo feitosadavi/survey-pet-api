@@ -1,5 +1,5 @@
 import { HttpResponse, HttpRequest, Controller, EmailValidator, AddAccount, Validation } from './signup-protocols'
-import { MissingParamError, InvalidParamError } from '../../errors'
+import { InvalidParamError } from '../../errors'
 import {
   badRequest,
   serverError,
@@ -23,12 +23,7 @@ export class SignUpController implements Controller {
       if (error !== null) {
         return badRequest(error)
       }
-      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field]) {
-          return badRequest(new MissingParamError(field))
-        }
-      }
+
       const { name, email, password, passwordConfirmation } = httpRequest.body
       if (password !== passwordConfirmation) {
         return badRequest(new InvalidParamError('passwordConfirmation'))
