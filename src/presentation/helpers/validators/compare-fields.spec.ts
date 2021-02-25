@@ -14,7 +14,7 @@ const makeSut = (fieldName: string, fieldNameToCompare: string): SutTypes => {
 }
 
 describe('RequireFieldsValidation', () => {
-  test('Should return InvalidParamError if CompareFieldsValidation detects missing param', () => {
+  test('Should CompareFieldsValidation returns InvalidParamError if validation fails', () => {
     const { sut } = makeSut('password', 'passwordConfirmation') // quero comparar estes dois campos
 
     const httpRequest = {
