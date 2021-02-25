@@ -15,18 +15,8 @@ const makeSut = (fieldName: string, fieldNameToCompare: string): SutTypes => {
 
 describe('CompareFieldsValidation', () => {
   test('Should CompareFieldsValidation returns InvalidParamError if validation fails', () => {
-    const { sut } = makeSut('password', 'passwordConfirmation') // quero comparar estes dois campos
-
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password123'
-      }
-    }
-
-    const error = sut.validate(httpRequest.body)
-    expect(error).toEqual(new InvalidParamError('passwordConfirmation'))
+    const { sut } = makeSut('field', 'fieldToCompare') // quero comparar estes dois campos
+    const error = sut.validate({ field: 'any_value', fieldToCompare: 'wrong_value' })
+    expect(error).toEqual(new InvalidParamError('fieldToCompare'))
   })
 })
