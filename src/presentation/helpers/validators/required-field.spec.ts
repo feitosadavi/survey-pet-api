@@ -14,9 +14,15 @@ const makeSut = (fieldName: string): SutTypes => {
 }
 
 describe('RequireFieldValidation', () => {
-  test('Should return a MissingParamError if RequiredFieldValidation detects missing param', () => {
+  test('Should RequireFieldValidation returns InvalidParamError if validation fails', () => {
     const { sut } = makeSut('field')
     const error = sut.validate({ name: 'any_name' })
     expect(error).toEqual(new MissingParamError('field'))
+  })
+
+  test('Should RequiredFieldValidation returns nothing if validation succeed', () => {
+    const { sut } = makeSut('field')
+    const error = sut.validate({ field: 'any_field' })
+    expect(error).toBeFalsy()
   })
 })
