@@ -1,4 +1,4 @@
-import { InvalidParamError, ServerError } from '../../errors'
+import { InvalidParamError } from '../../errors'
 import { EmailValidator, Validation } from '../../controllers/signup/signup-protocols'
 import { EmailValidation } from './email-validation'
 
