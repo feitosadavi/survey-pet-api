@@ -44,10 +44,8 @@ describe('Validation Composite', () => {
     expect(error).toEqual(new MissingParamError('field'))
   })
   test('Should return nothing if all validations succeed', () => {
-    const { sut, validationStubs } = makeSut()
-    jest.spyOn(validationStubs[0], 'validate')
+    const { sut } = makeSut()
     const error = sut.validate({ field: 'any_value' })
-
     expect(error).toBeFalsy()
   })
 })
