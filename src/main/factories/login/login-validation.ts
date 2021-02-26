@@ -1,7 +1,5 @@
-import { EmailValidation } from '../../../presentation/helpers/validators/email-validation'
-import { RequiredFieldValidation } from '../../../presentation/helpers/validators/required-field'
+import { ValidationComposite, RequiredFieldValidation, EmailValidation } from '../../../presentation/helpers/validators'
 import { Validation } from '../../../presentation/protocols/validation'
-import { ValidationComposite } from '../../../presentation/helpers/validators/validation-composite'
 import { EmailValidatorAdapter } from '../../../utils/email-validator-adapter'
 
 // este factory foi criado para que possamos testar apenas o validation de forma isolada
