@@ -1,9 +1,9 @@
-import { CompareFieldsValidation } from '../../presentation/helpers/validators/compare-fields'
-import { EmailValidation } from '../../presentation/helpers/validators/email-validation'
-import { RequiredFieldValidation } from '../../presentation/helpers/validators/required-field'
-import { Validation } from '../../presentation/helpers/validators/validation'
-import { ValidationComposite } from '../../presentation/helpers/validators/validation-composite'
-import { EmailValidatorAdapter } from '../../utils/email-validator-adapter'
+import { CompareFieldsValidation } from '../../../presentation/helpers/validators/compare-fields'
+import { EmailValidation } from '../../../presentation/helpers/validators/email-validation'
+import { RequiredFieldValidation } from '../../../presentation/helpers/validators/required-field'
+import { Validation } from '../../../presentation/helpers/validators/validation'
+import { ValidationComposite } from '../../../presentation/helpers/validators/validation-composite'
+import { EmailValidatorAdapter } from '../../../utils/email-validator-adapter'
 
 // este factory foi criado para que possamos testar apenas o validation de forma isolada
 export const makeSignUpValidation = (): ValidationComposite => {
