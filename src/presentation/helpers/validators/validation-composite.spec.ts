@@ -1,42 +1,51 @@
+import { InvalidParamError, MissingParamError } from '../../errors'
 import { Validation } from './validation'
 import { ValidationComposite } from './validation-composite'
 
 interface SutTypes {
   sut: ValidationComposite
-  validationStub: Validation
+  validationStubs: Validation[]
 }
 
-const makeValidationStub = (): Validation => {
+const makeValidationStubs = (): Validation => {
   class ValidationStub implements Validation {
     validate (input: any): Error {
-      return new Error()
+      return null
     }
   }
   return new ValidationStub()
 }
 
 const makeSut = (): SutTypes => {
-  const validationStub = makeValidationStub()
-  const sut = new ValidationComposite([validationStub])
+  const validationStubs = [
+    makeValidationStubs(), makeValidationStubs()
+  ]
+  const sut = new ValidationComposite(validationStubs)
   return {
     sut,
-    validationStub
+    validationStubs
   }
 }
 
 describe('Validation Composite', () => {
   test('Should return an error if any validation fails', () => {
-    const { sut } = makeSut()
+    const { sut, validationStubs } = makeSut()
+    jest.spyOn(validationStubs[0], 'validate').mockReturnValueOnce(new MissingParamError('field'))
     const error = sut.validate({ field: 'any_value' })
 
-    expect(error).toEqual(new Error())
+    expect(error).toEqual(new MissingParamError('field'))
   })
 
+  test('Should return the first error more then one validation', () => {
+    const { sut, validationStubs } = makeSut()
+    jest.spyOn(validationStubs[0], 'validate').mockReturnValueOnce(new MissingParamError('field'))
+    jest.spyOn(validationStubs[1], 'validate').mockReturnValueOnce(new InvalidParamError('field'))
+    const error = sut.validate({ field: 'any_value' })
+    expect(error).toEqual(new MissingParamError('field'))
+  })
   test('Should return nothing if all validations succeed', () => {
-    const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockImplementationOnce((input: any): undefined => {
-      return undefined
-    })
+    const { sut, validationStubs } = makeSut()
+    jest.spyOn(validationStubs[0], 'validate')
     const error = sut.validate({ field: 'any_value' })
 
     expect(error).toBeFalsy()
