@@ -1,4 +1,4 @@
-import { serverError, serverSuccess, unauthorized } from '../../helpers/http-helper'
+import { badRequest, serverError, serverSuccess, unauthorized } from '../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse, Authentication, Validation } from './login-protocols'
 
 export class LoginController implements Controller {
@@ -13,9 +13,10 @@ export class LoginController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { email, password } = httpRequest.body
-      this.validation.validate(httpRequest.body)
-      this.validation.validate(email)
-
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        badRequest(error)
+      }
       const accessToken = await this.authentication.auth(email, password)
       if (!accessToken) {
         return unauthorized()
