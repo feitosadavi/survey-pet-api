@@ -3,7 +3,7 @@ import {
   badRequest,
   serverError,
   serverSuccess
-} from '../../helpers/http-helper'
+} from '../../helpers/http/http-helper'
 
 export class SignUpController implements Controller {
   private readonly addAccount: AddAccount

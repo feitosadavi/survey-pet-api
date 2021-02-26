@@ -1,4 +1,4 @@
-import { badRequest, serverError, serverSuccess, unauthorized } from '../../helpers/http-helper'
+import { badRequest, serverError, serverSuccess, unauthorized } from '../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Authentication, Validation } from './login-protocols'
 
 export class LoginController implements Controller {
