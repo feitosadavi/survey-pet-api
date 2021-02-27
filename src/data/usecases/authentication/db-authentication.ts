@@ -13,7 +13,11 @@ export class DbAuthentication implements Authentication {
 
   async auth (authentication: AuthenticationModel): Promise<string> {
     const account = await this.loadAccountByEmailRepository.load(authentication.email)
-    if (account) await this.hashComparer.compare(authentication.password, account.password)
+    if (account) {
+      const matchPassword = await this.hashComparer.compare(authentication.password, account.password)
+      if (!matchPassword) return null
+      else return 'sdafsdfaa'
+    }
 
     return null // vai retornar null pro controller, que retornar um unauthorized
   }
