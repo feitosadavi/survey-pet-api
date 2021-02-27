@@ -22,9 +22,10 @@ export class DbAuthentication implements Authentication {
     const account = await this.loadAccountByEmailRepository.load(authentication.email)
     if (account) {
       const matchPassword = await this.hashComparer.compare(authentication.password, account.password)
-      if (!matchPassword) return null
-      const accessToken = await this.tokenGenerator.generate(account.id)
-      return accessToken
+      if (matchPassword) {
+        const accessToken = await this.tokenGenerator.generate(account.id)
+        return accessToken
+      }
     }
 
     return null // vai retornar null pro controller, que retornar um unauthorized
