@@ -85,10 +85,11 @@ describe('DbAuthentication usecase', () => {
     await sut.auth(makeFakeAuthenticationModel())
     expect(compareSpy).toBeCalledWith('any_password', 'hashed_password')
   })
-  // test('Should call HashComparer with correct password', async () => {
-  //   const { sut, hashCompareStub } = makeSut()
-  //   jest.spyOn(loadAccountByEmailRepositoryStub, 'load').mockReturnValueOnce(null)
-  //   const accessToken = await sut.auth(makeFakeAuthenticationModel())
-  //   expect(accessToken).toBeNull()
-  // })
+
+  test('Should return null if HashComparer returns false', async () => {
+    const { sut, hashComparerStub } = makeSut()
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(new Promise(resolve => resolve(false)))
+    const accessToken = await sut.auth(makeFakeAuthenticationModel())
+    expect(accessToken).toBe(null)
+  })
 })
