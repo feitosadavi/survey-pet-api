@@ -5,6 +5,11 @@ jest.mock('bcrypt', () => ({
   async hash (): Promise<string> {
     // mockei o retorno do hash para facilitar os testes
     return new Promise(resolve => resolve('mockHash'))
+  },
+
+  async compare (): Promise<boolean> {
+    // mockei o retorno do hash para facilitar os testes
+    return new Promise(resolve => resolve(true))
   }
 }))
 
@@ -14,14 +19,14 @@ const makeSut = (): BcryptAdapter => {
 }
 
 describe('Bcrypt Adapter', () => {
-  test('Should call bcrypt with correct value', async () => {
+  test('Should call hash with correct values', async () => {
     const sut = makeSut()
     const hashSpy = jest.spyOn(bcrypt, 'hash')
     await sut.hash('any_value')
     expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
   })
 
-  test('Should return a hash on success', async () => {
+  test('Should return a valid hash on success', async () => {
     const sut = makeSut()
     const hash = await sut.hash('any_value')
     expect(hash).toBe('mockHash')
@@ -33,5 +38,12 @@ describe('Bcrypt Adapter', () => {
     // quando eu quero retornar uma exceção, eu não posso chamar o método do sut com um await
     const promise = sut.hash('any_value')
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call compare with correct values', async () => {
+    const sut = makeSut()
+    const compareSpy = jest.spyOn(bcrypt, 'compare')
+    await sut.compare('any_value', 'any_hash')
+    expect(compareSpy).toHaveBeenCalledWith('any_value', 'any_hash')
   })
 })
