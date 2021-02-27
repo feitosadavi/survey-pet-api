@@ -20,7 +20,7 @@ export const MongoHelper = {
      *  as vezes a conexão poderá ter sido encerrada,
      * então faremos o reconect para garantir que o usuário não receba um erro
      */
-    if (!this.client?.isConnected()) await this.connect(this.url)
+    if (!this.client.isConnected()) await this.connect(this.url)
     return this.client.db().collection(name)
   },
   map: (collection: any): any => { // regra de negócio: o mongo retorna o id como _id, como preciso utilizar como id

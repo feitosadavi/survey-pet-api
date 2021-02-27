@@ -1,4 +1,4 @@
-import { serverError, unauthorized, serverSuccess } from '../../helpers/http/http-helper'
+import { serverError, unauthorized, serverSuccess, badRequest } from '../../helpers/http/http-helper'
 import { Authentication, AuthenticationModel, HttpRequest, Validation } from './login-protocols'
 import { LoginController } from './login'
 
@@ -48,6 +48,14 @@ describe('Login Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(makeFakeRequest())
     expect(authSpy).toHaveBeenCalledWith({ email: 'any_email@mail.com', password: 'any_password' })
+  })
+
+  test('Should return 400 if Validation returns an error ', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse).toEqual(badRequest(new Error()))
   })
 
   test('Should return 401 if invalid credentials are provided', async () => {
