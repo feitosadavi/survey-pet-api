@@ -1,4 +1,4 @@
-import { LogErrorRepository } from '../../data/protocols/log-error-repository'
+import { LogErrorRepository } from '../../data/protocols/db/log-error-repository'
 import { Controller, HttpRequest, HttpResponse } from '../../presentation/protocols'
 
 // com o decorator eu adiciono um comportamento ao controlador, sem modificar o controlador
