@@ -4,13 +4,10 @@ import { Controller, HttpRequest, HttpResponse } from '../../presentation/protoc
 // com o decorator eu adiciono um comportamento ao controlador, sem modificar o controlador
 // A classe que vamos decorar, deve do mesmo tipo da classe que estamos implementando ou herdando
 export class LogControllerDecorator implements Controller {
-  private readonly controller: Controller
-  private readonly logErrorRepository: LogErrorRepository
-
-  constructor (controller: Controller, logErrorRepository: LogErrorRepository) {
-    this.controller = controller
-    this.logErrorRepository = logErrorRepository
-  }
+  constructor (
+    private readonly controller: Controller,
+    private readonly logErrorRepository: LogErrorRepository
+  ) { }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const httpResponse = await this.controller.handle(httpRequest)
