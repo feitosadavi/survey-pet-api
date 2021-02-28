@@ -1,5 +1,5 @@
 import { InvalidParamError } from '../../errors'
-import { Validation } from '../../controllers/signup/signup-protocols'
+import { Validation } from '../../controllers/signup/signup-controller-protocols'
 import { EmailValidation } from './email-validation'
 import { EmailValidator } from '../../protocols/email-validator'
 

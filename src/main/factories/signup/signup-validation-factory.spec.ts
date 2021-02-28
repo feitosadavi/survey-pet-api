@@ -1,6 +1,6 @@
 import { RequiredFieldValidation, CompareFieldsValidation, EmailValidation, ValidationComposite } from '../../../presentation/helpers/validators'
 import { Validation } from '../../../presentation/protocols/validation'
-import { makeSignUpValidation } from './signup-validation'
+import { makeSignUpValidation } from './signup-validation-factory'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
 
 // quando eu mocko um módulo, ele passa a não ter mais o comportamento default dele
