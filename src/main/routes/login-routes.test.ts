@@ -49,5 +49,15 @@ describe('Login Routes', () => {
         })
         .expect(200)
     })
+
+    test('Should return 401 if login is unauthorized', async () => {
+      await request(app)
+        .post('/api/login')
+        .send({
+          email: 'davifeitosa.dev@gmail.com',
+          password: '123456'
+        })
+        .expect(401)
+    })
   })
 })
