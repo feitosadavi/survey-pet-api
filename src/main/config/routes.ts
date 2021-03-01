@@ -1,13 +1,10 @@
 import { Express, Router } from 'express'
-import fastGlob from 'fast-glob' // pega as rotas dinamicamente do diretório indicado
+import { readdirSync } from 'fs'
 
 export default (app: Express): void => {
   const router = Router()
-  app.use('/api', router) // no primeiro argumento eu adiciono o prefixo da rota
-  // sincronizo todos os arquivos que terminam com routes.ts
-  // com o map, eu pego todos as rotas que tenham routes.ts
-  fastGlob.sync('**/src/main/routes/**routes.ts').map(async (file) => {
-    /**
+  app.use('/api', router)
+  /**
      * await import
      * o import abaixo é o mesmo que: import {} from file
      * mas para fazer imports dentro do bloco, somente desta forma.
@@ -15,7 +12,11 @@ export default (app: Express): void => {
      * Preciso usar o await nesse caso
      * O route é uma função que serve para levar o routeR daqui para cada rota
      * existente na pasta routes
+     * o dirname eu uso a referência local do arquivo para importar o arquivo que eu quiser, dessa forma não terei problemas em produção
      */
-    ;(await import(`../../../${file}`)).default(router)
+  readdirSync(`${__dirname}/../routes/`).map(async (file) => {
+    if (!file.includes('.test.')) {
+      (await import(`../routes/${file}`)).default(router) // pego o arquivo e depois o seu default
+    }
   })
 }
