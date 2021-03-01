@@ -1,5 +1,5 @@
 version: "3"
-service:
+services:
   mongo:
     container_name: mongo-container_name
     image: mongo:3
