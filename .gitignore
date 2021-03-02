@@ -2,6 +2,7 @@ node_modules
 dist
 coverage
 data
+!src/data
 .vscode
 playground.js
 globalConfig.json

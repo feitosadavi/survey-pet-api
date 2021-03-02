@@ -6,8 +6,7 @@ import { makeLoginValidation } from './login-validation-factory'
 import { makeDbAuthentication } from '../../usecases/authentication/db-authentication-factory'
 
 export const makeLoginController = (): Controller => {
-  const dbAuthentication = makeDbAuthentication()
-  const loginController = new LoginController(makeLoginValidation(), dbAuthentication)
+  const loginController = new LoginController(makeLoginValidation(), makeDbAuthentication())
   const logMongoRepository = new LogMongoRepository()
 
   return new LogControllerDecorator(loginController, logMongoRepository)
