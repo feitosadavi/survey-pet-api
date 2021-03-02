@@ -1,5 +1,3 @@
-import { EmailInUseError } from '../../../presentation/errors'
-import { forbidden } from '../../../presentation/helpers/http/http-helper'
 import { LoadAccountByEmailRepository } from '../authentication/db-authentication-protocols'
 import { AddAccount, AddAccountModel, AccountModel, Hasher, AddAccountRepository } from './db-add-account-protocols'
 
