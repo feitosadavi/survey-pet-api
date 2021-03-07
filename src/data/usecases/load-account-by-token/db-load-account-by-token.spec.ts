@@ -62,7 +62,7 @@ describe('DbLoadAccountByToken', () => {
     expect(account).toBeNull()
   })
 
-  test('Should return call Load with correct values', async () => {
+  test('Should call LoadAccountByTokenRepository with correct values', async () => {
     const { sut, loadAccountByTokenRepositoryStub } = makeSut()
     const loadByToken = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
     await sut.loadByToken('any_token', 'any_role')
