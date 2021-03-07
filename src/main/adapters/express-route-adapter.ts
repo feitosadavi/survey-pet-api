@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { Controller, HttpRequest } from '../../../presentation/protocols'
+import { Controller, HttpRequest } from '../../presentation/protocols'
 
 // o express espera na declaração da rota uma função que tenha parâmetros req e res
 // então no adaptRoute eu retorno uma função com tal configuração
