@@ -14,6 +14,7 @@
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
+    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
     "test:clear": "jest --clearCache"
   },
   "keywords": [],
@@ -30,6 +31,7 @@
     "@types/supertest": "^2.0.10",
     "@types/validator": "^12.0.1",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-standard-with-typescript": "^11.0.1",
     "eslint-plugin-import": "^2.22.1",
