@@ -97,5 +97,13 @@ describe('Survey Routes', () => {
         .send()
         .expect(204)
     })
+
+    test('Should return 200 on load survey success', async () => {
+      await surveysCollection.insertOne({ ...makeFakeSurvey() })
+      await request(app)
+        .get('/api/surveys')
+        .send()
+        .expect(200)
+    })
   })
 })
