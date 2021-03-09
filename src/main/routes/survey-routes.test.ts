@@ -24,19 +24,23 @@ describe('Survey Routes', () => {
     await accountsCollection.deleteMany({})
   })
 
+  const makeFakeSurvey = (): any => {
+    return {
+      question: 'Qual é o seu animal preferido?',
+      answers: [
+        {
+          answer: 'gato',
+          image: 'gato-image.png'
+        }
+      ]
+    }
+  }
+
   describe('POST /surveys', () => {
     test('Should return 403 on add survey without accessToken ', async () => {
       await request(app)
         .post('/api/surveys')
-        .send({
-          question: 'Qual é o seu animal preferido?',
-          answers: [
-            {
-              answer: 'gato',
-              image: 'gato-image.png'
-            }
-          ]
-        })
+        .send(makeFakeSurvey())
         .expect(403)
     })
 
@@ -59,15 +63,7 @@ describe('Survey Routes', () => {
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
-        .send({
-          question: 'Qual é o seu animal preferido?',
-          answers: [
-            {
-              answer: 'gato',
-              image: 'gato-image.png'
-            }
-          ]
-        })
+        .send(makeFakeSurvey())
         .expect(204)
     })
 
@@ -89,16 +85,17 @@ describe('Survey Routes', () => {
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
-        .send({
-          question: 'Qual é o seu animal preferido?',
-          answers: [
-            {
-              answer: 'gato',
-              image: 'gato-image.png'
-            }
-          ]
-        })
+        .send(makeFakeSurvey())
         .expect(403)
+    })
+  })
+
+  describe('GET /surveys', () => {
+    test('Should return 204 if surveys collection is empty', async () => {
+      await request(app)
+        .get('/api/surveys')
+        .send()
+        .expect(204)
     })
   })
 })
