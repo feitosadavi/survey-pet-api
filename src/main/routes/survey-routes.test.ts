@@ -4,6 +4,7 @@ import request from 'supertest'
 import app from '../config/app'
 import { sign } from 'jsonwebtoken'
 import env from '../config/env'
+import { AddSurveyModel } from '../../domain/usecases/add-survey'
 
 let surveysCollection: Collection
 let accountsCollection: Collection
@@ -34,6 +35,33 @@ describe('Survey Routes', () => {
         }
       ]
     }
+  }
+
+  const makeFakeAddSurveyModel = (): AddSurveyModel[] => {
+    return [
+      {
+        question: 'any_question',
+        answers: [
+          {
+            image: 'any_image',
+            answer: 'any_answer'
+          },
+          { answer: 'any_answer' }
+        ],
+        date: new Date()
+      },
+      {
+        question: 'other_question',
+        answers: [
+          {
+            image: 'other_image',
+            answer: 'other_answer'
+          },
+          { answer: 'other_answer' }
+        ],
+        date: new Date()
+      }
+    ]
   }
 
   describe('POST /surveys', () => {
@@ -99,7 +127,10 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 200 on load survey success', async () => {
-      await surveysCollection.insertOne({ ...makeFakeSurvey() })
+      await surveysCollection.insertMany([
+        { ...makeFakeAddSurveyModel()[0] },
+        { ...makeFakeAddSurveyModel()[1] }
+      ])
       await request(app)
         .get('/api/surveys')
         .send()
