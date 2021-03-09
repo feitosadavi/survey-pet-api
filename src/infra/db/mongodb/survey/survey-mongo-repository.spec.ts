@@ -1,9 +1,10 @@
 import { Collection } from 'mongodb'
+import { AddSurveyModel } from '../../../../domain/usecases/add-survey'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { SurveyMongoRepository } from './survey-mongo-repository'
 
 describe('SurveyMongo Repository', () => {
-  let surveyCollection: Collection
+  let surveysCollection: Collection
 
   // antes e depois de cada teste de integração, precisamos conectar e desconectar do banco
   beforeAll(async () => {
@@ -16,28 +17,61 @@ describe('SurveyMongo Repository', () => {
 
   // removo todos os registros da tabela antes de cada teste. Para não populuir as tabelas
   beforeEach(async () => {
-    surveyCollection = await MongoHelper.getCollection('surveys')
-    await surveyCollection.deleteMany({})
+    surveysCollection = await MongoHelper.getCollection('surveys')
+    await surveysCollection.deleteMany({})
   })
+
+  const makeFakeAddSurveyModel = (): AddSurveyModel[] => {
+    return [
+      {
+        question: 'any_question',
+        answers: [
+          {
+            image: 'any_image',
+            answer: 'any_answer'
+          },
+          { answer: 'any_answer' }
+        ],
+        date: new Date()
+      },
+      {
+        question: 'other_question',
+        answers: [
+          {
+            image: 'other_image',
+            answer: 'other_answer'
+          },
+          { answer: 'other_answer' }
+        ],
+        date: new Date()
+      }
+    ]
+  }
 
   const makeSut = (): SurveyMongoRepository => {
     return new SurveyMongoRepository()
   }
 
-  test('Should create a survey on add success', async () => {
-    const sut = makeSut()
-    await sut.add({
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer'
-        },
-        { answer: 'other_answer' }
-      ],
-      date: new Date()
+  describe('add()', () => {
+    test('Should create a survey on add success', async () => {
+      const sut = makeSut()
+      await sut.add(makeFakeAddSurveyModel()[0])
+      const survey = await surveysCollection.findOne({ question: 'any_question' })
+      expect(survey).toBeTruthy()
     })
-    const survey = await surveyCollection.findOne({ question: 'any_question' })
-    expect(survey).toBeTruthy()
+  })
+
+  describe('loadAll()', () => {
+    test('Should load all surveys on load success', async () => {
+      const sut = makeSut()
+      await surveysCollection.insertMany([
+        { ...makeFakeAddSurveyModel()[0] },
+        { ...makeFakeAddSurveyModel()[1] }
+      ])
+      const surveys = await sut.loadAll()
+      expect(surveys.length).toBe(2)
+      expect(surveys[0].question).toBe('any_question')
+      expect(surveys[1].question).toBe('other_question')
+    })
   })
 })
