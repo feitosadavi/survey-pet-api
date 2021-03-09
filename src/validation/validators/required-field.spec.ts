@@ -2,7 +2,7 @@ import { MissingParamError } from '@/presentation/errors'
 import { RequiredFieldValidation } from './required-field'
 import { Validation } from '@/presentation/protocols/validation'
 
-interface SutTypes {
+type SutTypes = {
   sut: Validation
 }
 

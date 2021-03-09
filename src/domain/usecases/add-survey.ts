@@ -1,9 +1,9 @@
-interface SurveyAnswerModel {
+type SurveyAnswerModel = {
   image?: string
   answer: string
 }
 
-export interface AddSurveyModel {
+export type AddSurveyModel = {
   question: string
   answers: SurveyAnswerModel[]
   date: Date

@@ -2,7 +2,7 @@ import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
 import { CompareFieldsValidation } from './compare-fields'
 import { Validation } from '@/presentation/protocols/validation'
 
-interface SutTypes {
+type SutTypes = {
   sut: Validation
 }
 
