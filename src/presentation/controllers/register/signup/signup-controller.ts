@@ -4,9 +4,9 @@ import {
   forbidden,
   serverError,
   serverSuccess
-} from '../../../helpers/http/http-helper'
+} from '@/presentation/helpers/http/http-helper'
 import { Authentication } from '../login/login-controller-protocols'
-import { EmailInUseError } from '../../../errors/email-in-use-error'
+import { EmailInUseError } from '@/presentation/errors/email-in-use-error'
 
 export class SignUpController implements Controller {
   constructor (

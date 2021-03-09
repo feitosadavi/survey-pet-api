@@ -1,5 +1,5 @@
-import { LogErrorRepository } from '../../data/protocols/db/log/log-error-repository'
-import { Controller, HttpRequest, HttpResponse } from '../../presentation/protocols'
+import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository'
+import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 
 // com o decorator eu adiciono um comportamento ao controlador, sem modificar o controlador
 // A classe que vamos decorar, deve do mesmo tipo da classe que estamos implementando ou herdando

@@ -1,6 +1,6 @@
 import { DbAddAccount } from './db-add-account'
 import { Hasher, AddAccountModel, AccountModel, AddAccountRepository } from './db-add-account-protocols'
-import { LoadAccountByEmailRepository } from '../../protocols/db/account/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 
 const makeFakeAuthentication = (): AccountModel => {
   return {

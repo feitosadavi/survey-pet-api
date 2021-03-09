@@ -8,8 +8,11 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
+  preset: '@shelf/jest-mongodb',
   transform: {
     '.+\\.ts$': 'ts-jest'
   },
-  preset: '@shelf/jest-mongodb'
+  moduleNameMapper: {
+    '@/(.*)': '<rootDir>/src/$1' // captura tudo após @/; $1 é o resultado da captura da expressão regular
+  }
 }

@@ -1,10 +1,10 @@
-import { RequiredFieldValidation, CompareFieldsValidation, EmailValidation, ValidationComposite } from '../../../../../validation/validators'
-import { Validation } from '../../../../../presentation/protocols/validation'
+import { RequiredFieldValidation, CompareFieldsValidation, EmailValidation, ValidationComposite } from '@/validation/validators'
+import { Validation } from '@/presentation/protocols/validation'
 import { makeSignUpValidation } from './signup-validation-factory'
-import { EmailValidator } from '../../../../../validation/protocols/email-validator'
+import { EmailValidator } from '@/validation/protocols/email-validator'
 
 // quando eu mocko um módulo, ele passa a não ter mais o comportamento default dele
-jest.mock('../../../../../validation/validators/validation-composite')
+jest.mock('@/validation/validators/validation-composite')
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
