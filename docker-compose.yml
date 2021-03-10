@@ -14,6 +14,8 @@ services:
     image: survey-pet-api
     restart: always
     command: npm start
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/survey-pet-api
     volumes:
       - ./dist:/usr/src/survey-pet-api/dist
     ports:
