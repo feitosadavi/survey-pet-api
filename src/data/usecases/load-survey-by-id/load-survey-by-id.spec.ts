@@ -58,4 +58,11 @@ describe('DbLoadSurveyById', () => {
     const survey = await sut.loadById('any_id')
     expect(survey).toEqual(makeFakeSurvey())
   })
+
+  test('Should call LoadSurvetByIdRepository with correct values', async () => {
+    const { sut, loadSurveyByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
+    const survey = await sut.loadById('any_id')
+    expect(survey).toBeNull()
+  })
 })
