@@ -1,4 +1,4 @@
-import { LoadSurveys } from '@/domain/usecases/load-surveys'
+import { LoadSurveys } from '@/domain/usecases/survey/load-surveys'
 import { SurveyModel } from './load-surveys-protocols'
 import { LoadSurveysController } from './load-surveys'
 import { noContent, serverError, serverSuccess } from '@/presentation/helpers/http/http-helper'

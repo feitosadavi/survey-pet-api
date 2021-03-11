@@ -4,7 +4,7 @@ import request from 'supertest'
 import app from '../config/app'
 import { sign } from 'jsonwebtoken'
 import env from '../config/env'
-import { AddSurveyModel } from '@/domain/usecases/add-survey'
+import { AddSurveyModel } from '@/domain/usecases/survey/add-survey'
 
 let surveysCollection: Collection
 let accountsCollection: Collection
