@@ -23,9 +23,11 @@ export const MongoHelper = {
     if (!this.client.isConnected()) await this.connect(this.url)
     return this.client.db().collection(name)
   },
-  map: (collection: any): any => { // regra de negócio: o mongo retorna o id como _id, como preciso utilizar como id
-    const { _id, ...collectionWithoutId } = collection
+  map: (data: any): any => { // regra de negócio: o mongo retorna o id como _id, como preciso utilizar como id
+    const { _id, ...collectionWithoutId } = data
     return Object.assign({}, collectionWithoutId, { id: _id })
+  },
+  mapCollection: (collection: any[]): any[] => {
+    return collection.map(c => MongoHelper.map(c))
   }
-
 }
