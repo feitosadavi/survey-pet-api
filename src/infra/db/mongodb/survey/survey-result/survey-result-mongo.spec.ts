@@ -30,13 +30,14 @@ describe('SurveyMongo Repository', () => {
 
   const makeFakeSurvey = async (): Promise<SurveyModel> => {
     const res = await surveysCollection.insertOne({
-      question: 'any_question',
+      id: 'valid_id',
+      question: 'valid_question',
       answers: [
         {
-          image: 'any_image',
-          answer: 'any_answer'
+          image: 'valid_image',
+          answer: 'valid_answer'
         },
-        { answer: 'any_answer' }
+        { answer: 'valid_answer' }
       ],
       date: new Date()
     })
@@ -57,7 +58,7 @@ describe('SurveyMongo Repository', () => {
     return new SurveyResultMongoRepository()
   }
 
-  describe('saveResult()', () => {
+  describe('SaveResultMongoRepository', () => {
     test('Should add a survey result if its new', async () => {
       const sut = makeSut()
       const survey = await makeFakeSurvey()
@@ -71,6 +72,28 @@ describe('SurveyMongo Repository', () => {
       expect(surveyResult).toBeTruthy()
       expect(surveyResult.id).toBeTruthy()
       expect(surveyResult.answer).toBe(survey.answers[0].answer)
+    })
+
+    test('Should update survey result if its not new', async () => {
+      const survey = await makeFakeSurvey()
+      const account = await makeFakeAccount()
+      const res = await surveysResultsCollection.insertOne({
+        surveyId: survey.id,
+        accountId: account.id,
+        answer: survey.answers[0].answer,
+        date: survey.date
+      })
+
+      const sut = makeSut()
+      const surveyResult = await sut.saveResult({
+        surveyId: survey.id,
+        accountId: account.id,
+        answer: survey.answers[1].answer, // altero a resposta
+        date: survey.date
+      })
+      expect(surveyResult).toBeTruthy()
+      expect(surveyResult.id).toEqual(res.ops[0]._id) // espero que tenha o mesmo id que antes
+      expect(surveyResult.answer).toBe(survey.answers[1].answer) // espero que a resposta tenha sido atualizada
     })
   })
 })
