@@ -80,4 +80,14 @@ describe('SurveyMongo Repository', () => {
       expect(surveys.length).toBe(0)
     })
   })
+
+  describe('loadById()', () => {
+    test('Should return a survey on success', async () => {
+      const res = await surveysCollection.insertOne({ ...makeFakeAddSurveyModel()[0] })
+      const sut = makeSut()
+      const survey = await sut.loadById(res.ops[0]._id)
+      expect(survey).toBeTruthy()
+      expect(survey.id).toBeTruthy()
+    })
+  })
 })
