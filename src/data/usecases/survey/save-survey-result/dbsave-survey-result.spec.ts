@@ -48,4 +48,10 @@ describe('SaveSurveyResult', () => {
     await sut.save(makeFakeAddSurveyResultModel())
     expect(saveSpy).toHaveBeenCalledWith(makeFakeAddSurveyResultModel())
   })
+
+  test('Should return undefined on saveSurveyResultRepository success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.save(makeFakeAddSurveyResultModel())
+    expect(response).toBeUndefined()
+  })
 })
