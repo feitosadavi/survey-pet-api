@@ -137,4 +137,13 @@ describe('Survey Routes', () => {
         .expect(200)
     })
   })
+
+  describe('PUT /surveys', () => {
+    test('should 403 on save survey without token ', async () => {
+      await request(app)
+        .put('/api/surveys')
+        .send()
+        .expect(403)
+    })
+  })
 })
