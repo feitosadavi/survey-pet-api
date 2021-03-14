@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { Collection, InsertOneWriteOpResult } from 'mongodb'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import request from 'supertest'
 import app from '../config/app'
@@ -64,6 +64,26 @@ describe('Survey Routes', () => {
     ]
   }
 
+  const makeAccount = async (): Promise<InsertOneWriteOpResult<any>> => {
+    const res = await accountsCollection.insertOne({
+      name: 'Carlos',
+      email: 'carlos@gmail.com',
+      password: '123',
+      role: 'admin'
+    })
+    return res
+  }
+
+  const updateAccount = async (id, accessToken): Promise<void> => {
+    await accountsCollection.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken
+      }
+    })
+  }
+
   describe('POST /surveys', () => {
     test('Should return 403 on add survey without accessToken ', async () => {
       await request(app)
@@ -73,14 +93,11 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 204 on add survey success ', async () => {
-      const res = await accountsCollection.insertOne({
-        name: 'Carlos',
-        email: 'carlos@gmail.com',
-        password: '123',
-        role: 'admin'
-      })
+      const res = await makeAccount()
+
       const id = res.ops[0]._id
       const accessToken = sign({ id }, env.secret)
+
       await accountsCollection.updateOne({
         _id: id
       }, {
@@ -88,6 +105,7 @@ describe('Survey Routes', () => {
           accessToken
         }
       })
+
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
@@ -103,13 +121,7 @@ describe('Survey Routes', () => {
       })
       const id = res.ops[0]._id
       const accessToken = sign({ id }, env.secret)
-      await accountsCollection.updateOne({
-        _id: id
-      }, {
-        $set: {
-          accessToken
-        }
-      })
+      await updateAccount(id, accessToken)
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
