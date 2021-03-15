@@ -65,22 +65,35 @@ describe('Survey Routes', () => {
   }
 
   const makeAccount = async (): Promise<InsertOneWriteOpResult<any>> => {
-    const res = await accountsCollection.insertOne({
+    return accountsCollection.insertOne({
       name: 'Carlos',
       email: 'carlos@gmail.com',
       password: '123',
       role: 'admin'
     })
-    return res
   }
 
-  const updateAccount = async (id, accessToken): Promise<void> => {
+  const updateAccountToken = async (id: string, accessToken: string): Promise<void> => {
     await accountsCollection.updateOne({
       _id: id
     }, {
       $set: {
         accessToken
       }
+    })
+  }
+
+  const makeSurvey = async (): Promise<InsertOneWriteOpResult<any>> => {
+    return surveysCollection.insertOne({
+      question: 'Qual é o seu animal preferido?',
+      answers: [
+        {
+          image: 'papagaio.png',
+          answer: 'papagaio'
+        },
+        { answer: 'jacaré' }
+      ],
+      date: new Date()
     })
   }
 
@@ -94,21 +107,12 @@ describe('Survey Routes', () => {
 
     test('Should return 204 on add survey success ', async () => {
       const res = await makeAccount()
-
       const id = res.ops[0]._id
       const accessToken = sign({ id }, env.secret)
-
-      await accountsCollection.updateOne({
-        _id: id
-      }, {
-        $set: {
-          accessToken
-        }
-      })
-
+      await updateAccountToken(id, accessToken)
       await request(app)
         .post('/api/surveys')
-        .set('x-access-token', accessToken)
+        .set('x-access-token', accessToken) // na requisição, eu coloco o accessToken nos headers
         .send(makeFakeSurvey())
         .expect(204)
     })
@@ -121,7 +125,7 @@ describe('Survey Routes', () => {
       })
       const id = res.ops[0]._id
       const accessToken = sign({ id }, env.secret)
-      await updateAccount(id, accessToken)
+      await updateAccountToken(id, accessToken)
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
@@ -150,12 +154,29 @@ describe('Survey Routes', () => {
     })
   })
 
-  describe('PUT /surveys', () => {
+  describe('PUT /surveys/:surveyId/results', () => {
     test('should 403 on save survey without token ', async () => {
       await request(app)
-        .put('/api/surveys')
+        .put('/api/surveys/any_survey_id/results')
         .send()
         .expect(403)
+    })
+
+    test('should 200 on save survey success ', async () => {
+      const resAccount = await makeAccount()
+      const resSurvey = await makeSurvey()
+
+      const accountId = resAccount.ops[0]._id
+      const accessToken = sign({ accountId }, env.secret)
+
+      await updateAccountToken(accountId, accessToken)
+      await request(app)
+        .put(`/api/surveys/${resSurvey.ops[0]._id}/results`)
+        .set('x-access-token', accessToken)
+        .send({
+          answer: 'papagaio'
+        })
+        .expect(200)
     })
   })
 })

@@ -10,5 +10,5 @@ import { auth } from '../middlewares/auth'
 export default (router: Router): void => {
   router.post('/surveys', adminAuth, adaptRoute(makeAddSurveyController()))
   router.get('/surveys', adaptRoute(makeLoadSurveyController()))
-  router.put('/surveys', auth, adaptRoute(makeSaveSurveyResultController()))
+  router.put('/surveys/:surveyId/results', auth, adaptRoute(makeSaveSurveyResultController()))
 }

@@ -7,16 +7,20 @@ export class SaveSurveyResultController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { accountId, answer } = httpRequest.body
+      const { answer } = httpRequest.body
       const { surveyId } = httpRequest.params
+      const { accountId } = httpRequest
+
       const survey = await this.loadSurveyById.loadById(surveyId)
+
       if (survey) {
         const answers = survey.answers.map(a => a.answer)
-
-        if (!answers.includes(answer)) return forbidden(new InvalidParamError('answer'))
+        if (!answers.includes(answer)) return forbidden(new InvalidParamError('answer')) // se a resposta enviada não existir nas opções do survey...
       } else {
         return forbidden(new InvalidParamError('surveyId'))
       }
+
+      // se o survey existir e a resposta for válida, eu salvo o resultado
       const surveyResult = await this.saveSurveyResult.save({ surveyId, accountId, answer, date: new Date() })
 
       return serverSuccess(surveyResult)
