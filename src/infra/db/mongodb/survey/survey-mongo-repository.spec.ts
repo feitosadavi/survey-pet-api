@@ -1,5 +1,5 @@
 import { Collection } from 'mongodb'
-import { AddSurveyModel } from '@/domain/usecases/survey/add-survey'
+import { AddSurveyParams } from '@/domain/usecases/survey/add-survey'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { SurveyMongoRepository } from './survey-mongo-repository'
 
@@ -21,7 +21,7 @@ describe('SurveyMongo Repository', () => {
     await surveysCollection.deleteMany({})
   })
 
-  const makeFakeAddSurveyModel = (): AddSurveyModel[] => {
+  const makeFakeAddSurveyParams = (): AddSurveyParams[] => {
     return [
       {
         question: 'any_question',
@@ -55,7 +55,7 @@ describe('SurveyMongo Repository', () => {
   describe('add()', () => {
     test('Should create a survey on add success', async () => {
       const sut = makeSut()
-      await sut.add(makeFakeAddSurveyModel()[0])
+      await sut.add(makeFakeAddSurveyParams()[0])
       const survey = await surveysCollection.findOne({ question: 'any_question' })
       expect(survey).toBeTruthy()
     })
@@ -65,8 +65,8 @@ describe('SurveyMongo Repository', () => {
     test('Should load all surveys on load success', async () => {
       const sut = makeSut()
       await surveysCollection.insertMany([
-        { ...makeFakeAddSurveyModel()[0] },
-        { ...makeFakeAddSurveyModel()[1] }
+        { ...makeFakeAddSurveyParams()[0] },
+        { ...makeFakeAddSurveyParams()[1] }
       ])
       const surveys = await sut.loadAll()
       expect(surveys.length).toBe(2)
@@ -83,7 +83,7 @@ describe('SurveyMongo Repository', () => {
 
   describe('loadById()', () => {
     test('Should return a survey on success', async () => {
-      const res = await surveysCollection.insertOne({ ...makeFakeAddSurveyModel()[0] })
+      const res = await surveysCollection.insertOne({ ...makeFakeAddSurveyParams()[0] })
       const sut = makeSut()
       const survey = await sut.loadById(res.ops[0]._id)
       expect(survey).toBeTruthy()
