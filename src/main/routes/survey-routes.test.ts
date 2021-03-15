@@ -162,7 +162,7 @@ describe('Survey Routes', () => {
         .expect(403)
     })
 
-    test('should 200 on save survey success ', async () => {
+    test('should 200 on save survey success', async () => {
       const resAccount = await makeAccount()
       const resSurvey = await makeSurvey()
 
