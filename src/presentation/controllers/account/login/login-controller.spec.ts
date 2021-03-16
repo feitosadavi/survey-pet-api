@@ -45,7 +45,7 @@ describe('Login Controller', () => {
     const { authenticationStub, sut } = makeSut()
 
     // se não retornar um token, é porque deu erro na autenticação
-    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(unauthorized())
   })

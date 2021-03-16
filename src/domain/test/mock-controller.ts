@@ -9,7 +9,7 @@ export const mockController = (): Controller => {
         },
         statusCode: 200
       }
-      return new Promise(resolve => resolve(httpResponse))
+      return Promise.resolve(httpResponse)
     }
   }
   return new ControllerStub()

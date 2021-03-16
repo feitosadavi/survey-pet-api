@@ -26,7 +26,7 @@ export const mockSurveyResultModel = (): SurveyResultModel => {
 export const mockLoadSurveyById = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
     async loadById (id: string): Promise<SurveyModel> {
-      return new Promise(resolve => resolve(mockSurveysModel()[0]))
+      return Promise.resolve(mockSurveysModel()[0])
     }
   }
   return new LoadSurveyByIdStub()
@@ -35,7 +35,7 @@ export const mockLoadSurveyById = (): LoadSurveyById => {
 export const mockSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
     async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-      return new Promise(resolve => resolve(mockSurveyResultModel()))
+      return Promise.resolve(mockSurveyResultModel())
     }
   }
   return new SaveSurveyResultStub()

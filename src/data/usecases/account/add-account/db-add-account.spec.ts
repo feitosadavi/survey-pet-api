@@ -8,7 +8,7 @@ const mockLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
     async loadByEmail (email: string): Promise<AccountModel> {
       // aqui o caso de sucesso é quando retorna null, pois signica que ainda não existe o email inserido
       // por isso não usarei o helper, pois ele retorna uma conta
-      return new Promise(resolve => resolve(null))
+      return Promise.resolve(null)
     }
   }
 
@@ -46,7 +46,7 @@ describe('DbAddAccount Usecase', () => {
 
   test('Should throw if Hasher throws', async () => {
     const { sut, hasherStub } = makeSut()
-    jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(Promise.reject(new Error()))
     const accountData = mockAccountParams()
     const promise = sut.add(accountData)
     await expect(promise).rejects.toThrow()
@@ -66,7 +66,7 @@ describe('DbAddAccount Usecase', () => {
 
   test('Should DbAddAccount throw if AddAccountRepository throws', async () => {
     const { sut, addAccountRepositoryStub } = makeSut()
-    jest.spyOn(addAccountRepositoryStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(addAccountRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(new Error()))
     const accountData = mockAccountParams()
     const promise = sut.add(accountData)
     await expect(promise).rejects.toThrow()
@@ -87,7 +87,7 @@ describe('DbAddAccount Usecase', () => {
 
   test('Should return null if LoadAccountByEmailRepository not return null', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockResolvedValueOnce(new Promise((resolve, reject) => resolve(mockAccountModel())))
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockResolvedValueOnce(Promise.resolve(mockAccountModel()))
     const account = await sut.add(mockAccountParams())
     expect(account).toBe(null)
   })
