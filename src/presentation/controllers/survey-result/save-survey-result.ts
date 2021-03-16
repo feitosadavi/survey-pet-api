@@ -25,6 +25,8 @@ export class SaveSurveyResultController implements Controller {
 
       return serverSuccess(surveyResult)
     } catch (error) {
+      console.log(error)
+
       return serverError(error)
     }
   }

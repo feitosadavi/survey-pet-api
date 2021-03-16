@@ -1,10 +1,10 @@
-import { Collection, InsertOneWriteOpResult } from 'mongodb'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { mockSurveysParams } from '@/domain/test'
+import { Collection, InsertOneWriteOpResult } from 'mongodb'
 import request from 'supertest'
-import app from '../config/app'
 import { sign } from 'jsonwebtoken'
+import app from '../config/app'
 import env from '../config/env'
-import { AddSurveyParams } from '@/domain/usecases/survey/add-survey'
 
 let surveysCollection: Collection
 let accountsCollection: Collection
@@ -25,46 +25,7 @@ describe('Survey Routes', () => {
     await accountsCollection.deleteMany({})
   })
 
-  const makeFakeSurvey = (): any => {
-    return {
-      question: 'Qual é o seu animal preferido?',
-      answers: [
-        {
-          answer: 'gato',
-          image: 'gato-image.png'
-        }
-      ]
-    }
-  }
-
-  const makeFakeAddSurveyParams = (): AddSurveyParams[] => {
-    return [
-      {
-        question: 'any_question',
-        answers: [
-          {
-            image: 'any_image',
-            answer: 'any_answer'
-          },
-          { answer: 'any_answer' }
-        ],
-        date: new Date()
-      },
-      {
-        question: 'other_question',
-        answers: [
-          {
-            image: 'other_image',
-            answer: 'other_answer'
-          },
-          { answer: 'other_answer' }
-        ],
-        date: new Date()
-      }
-    ]
-  }
-
-  const makeAccount = async (): Promise<InsertOneWriteOpResult<any>> => {
+  const insertAccount = async (): Promise<InsertOneWriteOpResult<any>> => {
     return accountsCollection.insertOne({
       name: 'Carlos',
       email: 'carlos@gmail.com',
@@ -83,7 +44,7 @@ describe('Survey Routes', () => {
     })
   }
 
-  const makeSurvey = async (): Promise<InsertOneWriteOpResult<any>> => {
+  const insertSurvey = async (): Promise<InsertOneWriteOpResult<any>> => {
     return surveysCollection.insertOne({
       question: 'Qual é o seu animal preferido?',
       answers: [
@@ -101,19 +62,19 @@ describe('Survey Routes', () => {
     test('Should return 403 on add survey without accessToken ', async () => {
       await request(app)
         .post('/api/surveys')
-        .send(makeFakeSurvey())
+        .send(mockSurveysParams())
         .expect(403)
     })
 
     test('Should return 204 on add survey success ', async () => {
-      const res = await makeAccount()
+      const res = await insertAccount()
       const id = res.ops[0]._id
       const accessToken = sign({ id }, env.secret)
       await updateAccountToken(id, accessToken)
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken) // na requisição, eu coloco o accessToken nos headers
-        .send(makeFakeSurvey())
+        .send(mockSurveysParams()[0])
         .expect(204)
     })
 
@@ -129,7 +90,7 @@ describe('Survey Routes', () => {
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
-        .send(makeFakeSurvey())
+        .send(mockSurveysParams())
         .expect(403)
     })
   })
@@ -144,8 +105,8 @@ describe('Survey Routes', () => {
 
     test('Should return 200 on load survey success', async () => {
       await surveysCollection.insertMany([
-        { ...makeFakeAddSurveyParams()[0] },
-        { ...makeFakeAddSurveyParams()[1] }
+        { ...mockSurveysParams()[0] },
+        { ...mockSurveysParams()[1] }
       ])
       await request(app)
         .get('/api/surveys')
@@ -163,8 +124,8 @@ describe('Survey Routes', () => {
     })
 
     test('should 200 on save survey success', async () => {
-      const resAccount = await makeAccount()
-      const resSurvey = await makeSurvey()
+      const resAccount = await insertAccount()
+      const resSurvey = await insertSurvey()
 
       const accountId = resAccount.ops[0]._id
       const accessToken = sign({ accountId }, env.secret)

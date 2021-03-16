@@ -23,6 +23,6 @@ export class DbAuthentication implements Authentication {
       }
     }
 
-    return null // vai retornar null pro controller, que retornar um unauthorized
+    return null // vai retornar null pro controller, que retornará um unauthorized
   }
 }

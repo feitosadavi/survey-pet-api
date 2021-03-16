@@ -28,9 +28,8 @@ describe('SurveyMongo Repository', () => {
     await surveysResultsCollection.deleteMany({})
   })
 
-  const makeFakeSurvey = async (): Promise<SurveyModel> => {
+  const insertSurvey = async (): Promise<SurveyModel> => {
     const res = await surveysCollection.insertOne({
-      id: 'valid_id',
       question: 'valid_question',
       answers: [
         {
@@ -44,7 +43,7 @@ describe('SurveyMongo Repository', () => {
     return res.ops[0]
   }
 
-  const makeFakeAccount = async (): Promise<AccountModel> => {
+  const insertAccount = async (): Promise<AccountModel> => {
     const res = await accountsCollection.insertOne({
       id: 'valid_id',
       name: 'valid_name',
@@ -61,8 +60,8 @@ describe('SurveyMongo Repository', () => {
   describe('SaveResultMongoRepository', () => {
     test('Should add a survey result if its new', async () => {
       const sut = makeSut()
-      const survey = await makeFakeSurvey()
-      const account = await makeFakeAccount()
+      const survey = await insertSurvey()
+      const account = await insertAccount()
       const surveyResult = await sut.saveResult({
         surveyId: survey.id,
         accountId: account.id,
@@ -75,8 +74,8 @@ describe('SurveyMongo Repository', () => {
     })
 
     test('Should update survey result if its not new', async () => {
-      const survey = await makeFakeSurvey()
-      const account = await makeFakeAccount()
+      const survey = await insertSurvey()
+      const account = await insertAccount()
       const res = await surveysResultsCollection.insertOne({
         surveyId: survey.id,
         accountId: account.id,
