@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/main/server.js",
+    "start": "rimraf dist && tsc -p tsconfig-build.json && nodemon dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "up": "npm run build && sudo docker-compose up -d",
     "down": "sudo docker-compose down",
@@ -55,6 +55,7 @@
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "mongodb": "^3.6.4",
+    "nodemon": "^2.0.7",
     "swagger-ui-express": "^4.1.6",
     "validator": "^12.2.0"
   },
