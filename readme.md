@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/feitosadavi/survey-pet-api.svg?branch=master)](https://travis-ci.com/feitosadavi/survey-pet-api) [![Coverage Status](https://coveralls.io/repos/github/feitosadavi/survey-pet-api/badge.svg?branch=master)](https://coveralls.io/github/feitosadavi/survey-pet-api?branch=master)
+
 # **Survey Pet API**
 
 This API, developed based on [Rodrigo Manguinho's course](https://www.udemy.com/course/tdd-com-mango/?,referralCode=B53CE5CA2B9AFA5A6FA1), consists of a survey system focused on the exchange of information about pet care
