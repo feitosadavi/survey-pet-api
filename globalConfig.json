@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"mongoUri":"mongodb://127.0.0.1:35733/519cd50d-5ddc-4197-b5e5-1becdf0c6122?"}
+=======
+{"mongoUri":"mongodb://127.0.0.1:43077/9bc9d77e-e0e4-4e4e-963b-4a305be663a8?"}
+>>>>>>> feat/swagger
